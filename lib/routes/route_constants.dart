@@ -1,0 +1,9 @@
+const String aboutModuleRoute = '/about_module';
+const String aboutSubModuleRoute = '/about_sub_module';
+const String dashboardRoute = '/dashboard';
+const String formulaSheetRoute = '/formulasheet';
+const String introductionRoute = '/introduction';
+const String loginRoute = '/login';
+const String profileRoute = '/profile';
+const String quizRoute = '/quiz';
+const String signUpRoute = '/signup';
