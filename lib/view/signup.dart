@@ -35,6 +35,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordController = TextEditingController();
   bool showpassword1 = false;
   bool showpassword2 = false;
+  
   Future<void> onSubmit() async {
     setState(() => isLoading = true);
     SignUpApiProvider signup = SignUpApiProvider();
@@ -55,6 +56,7 @@ class _SignUpState extends State<SignUp> {
 
         await signup.signUpAPI(payLoad).then(
           (op) async {
+
             if (op["error"] == null && op["data"] != null) {
               Fluttertoast.showToast(
                   msg: 'You have Successfully Registered New User');

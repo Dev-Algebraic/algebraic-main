@@ -10,6 +10,7 @@ class SignUpApiProvider extends BaseService {
       var response = await postRequest(url, jsonMap);
       return json.decode(response);
     } catch (err) {
+
       Fluttertoast.showToast(
           msg:
               'An error occurred while processing your request. Please try again later.');

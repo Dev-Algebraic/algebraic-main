@@ -1,0 +1,2 @@
+Starting component [1mtidb-lightning[0m: /Users/ishanpatel/.tiup/components/tidb-lightning/v8.5.2/tidb-lightning -config tidb-lightning.toml
+[0m[Lightning:Config:ErrParseConfigFile]cannot parse config file 'tidb-lightning.toml': toml: line 12: Key 'lightning' has already been defined.

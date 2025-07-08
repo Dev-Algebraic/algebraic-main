@@ -1,0 +1,26 @@
+[lightning]
+# Log
+level = "info"
+file = "tidb-lightning.log"
+
+[tikv-importer]
+backend = "tidb"
+
+[mydumper]
+data-source-dir = "/Users/ishanpatel/tidb-csv"
+
+[mydumper.csv]
+separator = '\t'
+delimiter = '"'
+header = true
+
+[tidb]
+# The information of target cluster
+host = "gateway01.us-west-2.prod.aws.tidbcloud.com"
+port = 4000
+user = "2LZxV29BtyLJ7SH.root"
+password = "w9DDM2fYMldyHdXa"
+tls = "cluster"
+
+[security]
+ca-path = "/etc/ssl/cert.pem"

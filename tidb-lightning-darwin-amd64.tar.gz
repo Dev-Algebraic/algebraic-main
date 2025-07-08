@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<Error>
+	<Code>NoSuchKey</Code>
+	<Message>The specified key does not exist.</Message>
+	<Resource>/tidb-lightning-darwin-amd64.tar.gz</Resource>
+	<RequestId>Njg2Y2FkMjJfNThiMWMyMDlfMzhhZl9iZDkxYmI2</RequestId>
+	<TraceId>OGVmYzZiMmQzYjA2OWNhODk0NTRkMTBiOWVmMDAxODc0OWRkZjk0ZDM1NmI1M2E2MTRlY2MzZDhmNmI5MWI1OTc5ODg4ODNhM2YxMjhiZjRjM2YxMGJhMzMwMjU5YTg0Y2I4MDFlOGYwMDcyYmMyMGJhNDg3MjNlZTQ5MWRlZWQ=</TraceId>
+</Error>
+
