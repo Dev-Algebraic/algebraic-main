@@ -2,6 +2,10 @@ import 'package:algebraic/utils/constants.dart';
 import 'package:algebraic/view/components/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/sharedpref.dart';
+import 'package:algebraic/routes/route_constants.dart';
+import 'package:flutter_svg/svg.dart';
+
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -76,6 +80,13 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Future<void> onLogout() async {
+    SharedPref sharedPref = SharedPref();
+
+    await sharedPref.remove("user");
+    Navigator.pushNamed(context, loginRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -93,6 +104,18 @@ class _ProfileState extends State<Profile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  InkWell(
+                    onTap: () {
+                      onLogout();
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.only(right: 30.0, top: 30),
+                        child: CircleAvatar(
+                          radius: 28,
+                          backgroundColor: const Color.fromRGBO(243, 244, 248, 1),
+                          child: SvgPicture.asset(CustomIcons.logout),
+                        )),
+                  ),
                   const Text(
                     'Profile',
                     style: TextStyle(
