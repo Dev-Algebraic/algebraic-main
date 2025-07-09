@@ -1,7 +1,6 @@
 import 'package:algebraic/routes/route_constants.dart';
 import 'package:algebraic/utils/constants.dart';
 import 'package:algebraic/view/about_module.dart';
-import 'package:algebraic/view/components/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -164,7 +163,7 @@ class _DashboardState extends State<Dashboard> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => AboutModule(quizattempt:modulesList[index].quizAttempt,

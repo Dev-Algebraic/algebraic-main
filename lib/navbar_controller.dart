@@ -26,6 +26,8 @@ class NavigationBarApp extends StatelessWidget {
           surfaceTint: Color.fromRGBO(242, 242, 242, 1),
           primary: Color.fromRGBO(17, 17, 17, 1),
           secondary: Color.fromRGBO(32, 32, 32, 1),
+          primaryContainer: Color.fromRGBO(219, 244, 239, 1),
+          secondaryContainer: Color.fromRGBO(237, 240, 247, 1),
         ),
       ),
 

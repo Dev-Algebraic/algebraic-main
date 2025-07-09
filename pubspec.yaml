@@ -91,6 +91,9 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-VariableFont_wght.ttf
     - family: Noto
       fonts:
         - asset: assets/fonts/NotoSansMath-Regular.ttf
