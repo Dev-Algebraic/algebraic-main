@@ -123,7 +123,7 @@ class _AboutModuleState extends State<AboutModule> {
           padding: const EdgeInsets.only(right: 18.0),
           child: CircleAvatar(
             radius: 14,
-            backgroundColor: const Color.fromRGBO(219, 224, 239, 1),
+            backgroundColor: activeColorGreen,
             child: Text(
               userDetails.firstName![0].toUpperCase(),
               style: const TextStyle(

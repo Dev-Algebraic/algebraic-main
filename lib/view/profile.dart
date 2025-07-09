@@ -47,7 +47,7 @@ class _ProfileState extends State<Profile> {
           padding: const EdgeInsets.only(right: 18.0),
           child: CircleAvatar(
             radius: 14,
-            backgroundColor: Color.fromRGBO(219, 224, 239, 1),
+            backgroundColor: activeColorGreen,
             child: Text(
               'V',
               style: TextStyle(
