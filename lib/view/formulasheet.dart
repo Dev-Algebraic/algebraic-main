@@ -13,7 +13,9 @@ import '../services/api_provider.dart';
 import '../utils/constants.dart';
 
 class FormulaSheet extends StatefulWidget {
-  const FormulaSheet({Key? key}) : super(key: key);
+  final bool isSubview;
+
+  const FormulaSheet({super.key, required this.isSubview});
 
   @override
   State<FormulaSheet> createState() => _FormulaSheetState();

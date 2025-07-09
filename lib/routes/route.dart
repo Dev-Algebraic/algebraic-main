@@ -27,7 +27,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case formulaSheetRoute:
       return MaterialPageRoute(
-        builder: (context) => const FormulaSheet(),
+        builder: (context) => const FormulaSheet(isSubview: true),
       );
     case introductionRoute:
       return MaterialPageRoute(

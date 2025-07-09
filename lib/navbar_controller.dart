@@ -23,6 +23,8 @@ class NavigationBarApp extends StatelessWidget {
         brightness: Brightness.dark,
         colorScheme: ColorScheme.dark(
           surfaceTint: Color.fromRGBO(242, 242, 242, 1),
+          primary: Color.fromRGBO(17, 17, 17, 1),
+          secondary: Color.fromRGBO(32, 32, 32, 1),
         ),
       ),
 
@@ -77,7 +79,7 @@ class _NavigationControllerState extends State<NavigationController> {
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.doc_text),
-            activeIcon: Icon(CupertinoIcons.doc_text_fill),
+            activeIcon: Icon(CupertinoIcons.doc_text_fill, size: 35),
             
             label: 'Formula Sheet'
           ),
@@ -98,7 +100,7 @@ class _NavigationControllerState extends State<NavigationController> {
             return MyApp();
           case 1:
             // Formula sheet screen
-            return FormulaSheet();
+            return FormulaSheet(isSubview: false);
           case 2:
           default:
             // Profile screen
@@ -149,7 +151,7 @@ class _NavigationControllerState extends State<NavigationController> {
         
         <Widget>[
           MyApp(),
-          FormulaSheet(),
+          FormulaSheet(isSubview: false),
           Profile(),
         ][currentPageIndex],
     );

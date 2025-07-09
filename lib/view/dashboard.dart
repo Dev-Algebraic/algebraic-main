@@ -67,19 +67,6 @@ class _DashboardState extends State<Dashboard> {
     return AppBar(
       backgroundColor: themeColor,
       // toolbarHeight: 64,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 18.0),
-        child: InkWell(
-          onTap: () {
-            _scaffoldKey.currentState!.openDrawer();
-          },
-          child: Row(
-            children: [
-              SvgPicture.asset(CustomIcons.menuBar, height: 28, width: 28),
-            ],
-          ),
-        ),
-      ),
       title: Row(
         children: [
           SvgPicture.asset(
@@ -105,7 +92,7 @@ class _DashboardState extends State<Dashboard> {
           padding: const EdgeInsets.only(right: 18.0),
           child: CircleAvatar(
             radius: 14,
-            backgroundColor: Color.fromRGBO(219, 224, 239, 1),
+            backgroundColor: activeColorGreen,
             child: Text(
               userDetails.firstName![0].toUpperCase(),
               style: TextStyle(
@@ -121,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
 
   Padding formulaSheet() {
     return Padding(
-      padding: const EdgeInsets.only(top: 28.0),
+      padding: const EdgeInsets.only(top: 16.0),
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(context, formulaSheetRoute);
@@ -136,16 +123,16 @@ class _DashboardState extends State<Dashboard> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 21.0),
+                    padding: const EdgeInsets.only(left: 16.0),
                     child: SvgPicture.asset(CustomIcons.formulaSheet),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 13.0),
+                    padding: const EdgeInsets.only(left: 12.0),
                     child: Text(
                       'Formula Sheet',
                       style: TextStyle(
                           fontSize: 19,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
                   )
@@ -168,7 +155,7 @@ class _DashboardState extends State<Dashboard> {
 
   Padding markList() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 16.0),
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -375,6 +362,8 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     DateTime? currentBackPressTime;
+    final theme = Theme.of(context);
+
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -402,7 +391,6 @@ class _DashboardState extends State<Dashboard> {
           : Scaffold(
               key: _scaffoldKey,
               appBar: appBar(),
-              drawer: DrawerWidget(),
               body: isloading
                   ? Center(
                       child: CircularProgressIndicator(
@@ -417,41 +405,41 @@ class _DashboardState extends State<Dashboard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 28.0),
+                              padding: const EdgeInsets.only(top: 32.0),
                               child: Text(
                                 'Welcome ${userDetails.firstName!}',
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w400,
-                                    color: Color.fromRGBO(34, 34, 34, 1)),
+                                    color: theme.colorScheme.secondary),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
+                              padding: const EdgeInsets.only(top: 0.0),
                               child: RichText(
                                 text: TextSpan(
                                     text: 'Have fun ',
                                     style: TextStyle(
                                         fontSize: 36,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.bold,
                                         color: Color.fromRGBO(34, 34, 34, 1)),
                                     children: [
                                       TextSpan(
                                         text: 'learning!',
                                         style: TextStyle(
                                             fontSize: 36,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.bold,
                                             color: activeColorGreen),
                                       )
                                     ]),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
+                              padding: const EdgeInsets.only(top: 16.0),
                               child: Text(
                                 '''Click on the various buttons to go to content, practice tests and a main information page that includes the most important facts to know for the EOC.''',
                                 style: TextStyle(
-                                    height: 2,
+                                    height: 1.5,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                     color: paragraphFont),
@@ -459,9 +447,9 @@ class _DashboardState extends State<Dashboard> {
                             ),
                             formulaSheet(),
                             Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
+                              padding: const EdgeInsets.only(top: 32.0),
                               child: Text(
-                                'Score / Algebra content',
+                                'Algebra Modules',
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
