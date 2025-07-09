@@ -80,17 +80,19 @@ class _FormulaSheetState extends State<FormulaSheet> with TickerProviderStateMix
       elevation: 0,
       backgroundColor: themeColor,
       // toolbarHeight: 64,
-      leading: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0),
-          child: Row(
-            children: [Icon(Icons.arrow_back_ios)],
+      
+      leading: widget.isSubview ? InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: Row(
+              children: [Icon(Icons.arrow_back_ios, color: Colors.white,)],
+            ),
           ),
-        ),
-      ),
+
+      ) : null,
       title: Row(
         children: [
           Text(
