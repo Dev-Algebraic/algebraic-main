@@ -354,7 +354,7 @@ class _AboutModuleState extends State<AboutModule> {
                           Padding(
                             padding: const EdgeInsets.only(top: 20.0),
                             child: Row(
-                              children: [Expanded(child: startQuizButton())],
+                              children: [Expanded(child: startQuizButton(context))],
                             ),
                           )
                         ],
@@ -368,7 +368,7 @@ class _AboutModuleState extends State<AboutModule> {
         });
   }
 
-  SizedBox startQuizButton() {
+  SizedBox startQuizButton(BuildContext dialogContext) {
     return SizedBox(
       height: 50,
       child: ElevatedButton(
@@ -378,6 +378,7 @@ class _AboutModuleState extends State<AboutModule> {
             backgroundColor: activeColorGreen,
             elevation: 0),
         onPressed: () {
+          Navigator.of(dialogContext).pop();
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -632,8 +633,101 @@ class _AboutModuleState extends State<AboutModule> {
   SingleChildScrollView unitQuiz(theme) {
     return SingleChildScrollView(
       child: Column(
-        
+        children: <Widget>[
+
+          // Title
+          Align(
+            alignment: Alignment.centerLeft,
+
+            child: Padding(
+              padding: EdgeInsetsGeometry.only(left: 32, top: 16),
+
+              child: Text(
+                "Best Score",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+
+          Align(
+            alignment: Alignment.centerLeft,
+
+            child: Padding(
+              padding: EdgeInsetsGeometry.only(left: 32, top: 0),
+
+              child: Text(
+                "3 attempts",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: theme.colorScheme.secondary,
+                ),
+              ),
+            ),
+          ),
+
+          // Percentage indicator
+
+          // Quiz button
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsGeometry.only(left: 32, right: 32),
+
+                  child: InkWell(
+                    onTap: () => {
+                      quizIntro(widget.moduleName)
+                    },
+                    
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: themeColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+
+                      child: Text(
+                        "Take Quiz",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+
+        ],
       ),
     );
   }
 }
+/*
+InkWell(
+            onTap: () => {
+              quizIntro(widget.moduleName)
+            },
+
+            child: Hero(
+              tag: 'thumbnail',
+              child: Ink.image(
+                image: AssetImage('assets/Gospel E-Booklet Thumbnail.png'),
+                fit: BoxFit.contain
+              ),
+            ),
+          ),*/

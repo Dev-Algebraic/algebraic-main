@@ -1,3 +1,4 @@
+import 'package:algebraic/navbar_controller.dart';
 import 'package:algebraic/utils/constants.dart';
 import 'package:algebraic/view/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -226,7 +227,7 @@ class _ScoreCardState extends State<ScoreCard> {
                       onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Dashboard()),
+                                builder: (context) => const NavigationBarApp()),
                           ),
                       child: Text("Finish".toUpperCase(),
                           style: const TextStyle(

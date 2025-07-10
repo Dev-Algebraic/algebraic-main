@@ -118,7 +118,7 @@ class _QuizState extends State<Quiz> {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(msg: 'An error occurred.Please try again.');
+      Fluttertoast.showToast(msg: 'An error occurred. Please try again.');
     }
   }
 
@@ -184,7 +184,7 @@ class _QuizState extends State<Quiz> {
         child: Padding(
           padding: const EdgeInsets.only(left: 18.0),
           child: Row(
-            children: [const Icon(Icons.arrow_back_ios)],
+            children: [const Icon(Icons.arrow_back_ios, color: Colors.white,)],
           ),
         ),
       ),
@@ -208,7 +208,7 @@ class _QuizState extends State<Quiz> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Attempt : ${widget.quizAttempt ?? 0}',
+                    'Attempt : ${(widget.quizAttempt ?? 0) + 1}',
                     style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w400,
@@ -300,6 +300,8 @@ class _QuizState extends State<Quiz> {
 
   double? width;
 
+  BuildContext? parentContext;
+
   @override
   Widget build(BuildContext context) {
     // final longEq = Math.tex(quizList[currentQuestion].description!,textStyle: TextStyle(fontSize: 21),);
@@ -308,6 +310,7 @@ class _QuizState extends State<Quiz> {
     //   children: breakResult.parts,
     // );
     width = MediaQuery.of(context).size.width;
+    parentContext = context;
     return WillPopScope(
       onWillPop: () async {
         endQuiz();
@@ -1248,7 +1251,7 @@ class _QuizState extends State<Quiz> {
                       padding: const EdgeInsets.only(top: 5),
                       child: Row(
                         children: [
-                          Expanded(child: continueNext(quizAnswers)),
+                          Expanded(child: continueNext(quizAnswers, context)),
                         ],
                       ),
                     )
@@ -1409,6 +1412,7 @@ class _QuizState extends State<Quiz> {
                 ),
                 onPressed: () {
                   addScore();
+                  Navigator.of(context).pop();
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -1471,7 +1475,7 @@ class _QuizState extends State<Quiz> {
         });
   }
 
-  SizedBox continueNext(quizAnswer) {
+  SizedBox continueNext(quizAnswer, BuildContext displayContext) {
     return SizedBox(
       height: 50,
       child: ElevatedButton(
@@ -1489,6 +1493,7 @@ class _QuizState extends State<Quiz> {
             // });
             DefaultCacheManager().emptyCache();
             // DefaultCacheManager().dispose();
+            Navigator.of(displayContext).pop();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -1506,17 +1511,16 @@ class _QuizState extends State<Quiz> {
             // nextQuestion();
           } else {
             addScore();
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ScoreCard(
-                          score: score,
-                          noQ: quizList.length,
-                          quizAttempt: widget.quizAttempt,
-                          moduleId: widget.moduleId,
-                          moduleName: widget.moduleName,
-                          moduleDescription: widget.moduleDescription,
-                        )));
+            Navigator.of(displayContext).pop();
+                  Navigator.of(parentContext!, rootNavigator: true).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => ScoreCard(
+                              score: score,
+                              noQ: quizList.length,
+                              quizAttempt: widget.quizAttempt,
+                              moduleId: widget.moduleId,
+                              moduleName: widget.moduleName,
+                              moduleDescription: widget.moduleDescription)));
           }
           selectedValue = -1;
           answerText1 = null;
