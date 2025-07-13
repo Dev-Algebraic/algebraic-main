@@ -169,8 +169,9 @@ class _DashboardState extends State<Dashboard> {
                         builder: (context) => AboutModule(quizattempt:modulesList[index].quizAttempt,
                             moduleId: modulesList[index].order_no,
                             moduleName: modulesList[index].name,
-                            moduleDescription:
-                                modulesList[index].description)));
+                            moduleDescription: modulesList[index].description,
+                            module: modulesList[index],
+                    )));
               },
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 15.0),

@@ -1,4 +1,6 @@
+import 'package:algebraic/models/modules_list_model.dart';
 import 'package:algebraic/models/topics_list_model.dart';
+import 'package:algebraic/models/quiz_attempts_list_model.dart';
 import 'package:algebraic/routes/route_constants.dart';
 import 'package:algebraic/utils/constants.dart';
 import 'package:algebraic/view/about_sub_module.dart';
@@ -10,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:intl/intl.dart';
 
 import '../models/user.dart';
 import '../services/api_provider.dart';
@@ -20,12 +24,15 @@ class AboutModule extends StatefulWidget {
   final String? moduleName;
   final String? moduleDescription;
   final int? quizattempt;
+  final ModulesList? module;
+  
   const AboutModule(
       {Key? key,
       this.moduleId,
       this.moduleName,
       this.moduleDescription,
-      this.quizattempt})
+      this.quizattempt,
+      this.module})
       : super(key: key);
 
   @override
@@ -48,6 +55,7 @@ class _AboutModuleState extends State<AboutModule> {
   UserDetails userDetails = UserDetails();
   List<TopicsList> topicsList = [];
   List readTopicsList = [];
+
   Future<void> getInitialValue() async {
     setState(() {
       isloading = true;
@@ -58,6 +66,8 @@ class _AboutModuleState extends State<AboutModule> {
     setState(() {
       userDetails = user!;
     });
+
+    getQuizAttempts();
   }
 
   Future<void> getTopicsList() async {
@@ -86,6 +96,38 @@ class _AboutModuleState extends State<AboutModule> {
         isloading = false;
       });
       Fluttertoast.showToast(msg: 'An error occurred.Please try again.');
+    }
+  }
+  
+  // Retrieve quiz attempts
+  List<QuizAttemptsList> quizAttempts = [];
+
+  Future<void> getQuizAttempts() async {
+    setState(() {
+      isloading = true;
+    });
+    GetScoreByModuleIdApiProvider scoreListApi = GetScoreByModuleIdApiProvider();
+    try {
+      await scoreListApi.getScoreByModuleId(widget.moduleId, userDetails.id).then((op) => {
+            setState(() {
+              if (op["data"] != null) {
+                final List resItems = op["data"];
+                quizAttempts = resItems
+                    .map((resRaw) => QuizAttemptsList.fromJson(resRaw))
+                    .toList();
+              } else {
+                // No quiz attempts
+              }
+            }),
+            setState(() {
+              isloading = false;
+            })
+          });
+    } catch (e) {
+      setState(() {
+        isloading = false;
+      });
+      Fluttertoast.showToast(msg: 'An error occurred. Please try again.');
     }
   }
 
@@ -635,16 +677,84 @@ class _AboutModuleState extends State<AboutModule> {
       child: Column(
         children: <Widget>[
 
+          // Percentage indicator
+          Padding(
+            padding: EdgeInsetsGeometry.only(top: 32, bottom: 8),
+            
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 180.0,
+        
+                child: ClipOval(
+                  child: CircularPercentIndicator(
+                    circularStrokeCap: CircularStrokeCap.round,
+                    radius: 90.0,
+                    lineWidth: 12.0,
+                    
+                    fillColor: theme.colorScheme.surfaceTint,
+                  
+                    animation: true,
+                    percent: (widget.module!
+                                    .scorePercentage ==
+                                "" ||
+                            widget.module!
+                                    .scorePercentage ==
+                                null)
+                        ? 0
+                        : (widget.module!
+                                .scorePercentage! /
+                            100),
+                    progressColor: widget.module!
+                                .scorePercentage ==
+                            null
+                        ? Color.fromRGBO(217, 217, 217, 1)
+                        : widget.module!
+                                    .scorePercentage ==
+                                100
+                            ? activeColorGreen
+                            : widget.module!
+                                        .scorePercentage >=
+                                    66
+                                ? Color.fromRGBO(
+                                    26, 190, 242, 1)
+                                : widget.module!
+                                            .scorePercentage >=
+                                        33
+                                    ? Color.fromRGBO(
+                                        242, 195, 26, 1)
+                                    : Color.fromRGBO(
+                                        255, 124, 124, 1),
+                    center: Text(
+                      (widget.module!.scorePercentage ==
+                              null)
+                          ? "0%"
+                          : widget.module!
+                                  .scorePercentage!
+                                  .toStringAsFixed(0) +
+                              "%",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           // Title
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
 
             child: Padding(
-              padding: EdgeInsetsGeometry.only(left: 32, top: 16),
+              padding: EdgeInsetsGeometry.only(left: 32, top: 0, right: 32),
 
               child: Text(
                 "Best Score",
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -655,31 +765,29 @@ class _AboutModuleState extends State<AboutModule> {
           ),
 
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
 
             child: Padding(
-              padding: EdgeInsetsGeometry.only(left: 32, top: 0),
+              padding: EdgeInsetsGeometry.only(left: 32, top: 0, right: 32),
 
               child: Text(
-                "3 attempts",
-                textAlign: TextAlign.left,
+                '${(widget.quizattempt != null) ? widget.quizattempt : 0} attempts',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: theme.colorScheme.secondary,
+                  color: paragraphFont,
                 ),
               ),
             ),
           ),
-
-          // Percentage indicator
 
           // Quiz button
           Row(
             children: <Widget>[
               Expanded(
                 child: Padding(
-                  padding: EdgeInsetsGeometry.only(left: 32, right: 32),
+                  padding: EdgeInsetsGeometry.only(top: 16, left: 40, right: 40),
 
                   child: InkWell(
                     onTap: () => {
@@ -697,11 +805,11 @@ class _AboutModuleState extends State<AboutModule> {
                       ),
 
                       child: Text(
-                        "Take Quiz",
+                        (widget.quizattempt == 0 || widget.quizattempt == null) ? "Take Quiz" : "Retake Quiz",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
@@ -710,24 +818,175 @@ class _AboutModuleState extends State<AboutModule> {
                 ),
               ),
             ],
-          )
+          ),
 
+          // Past attempts header
+          Padding(
+            padding: const EdgeInsets.only(left: 32, right: 32, top: 24),
+
+            child: Align(
+              alignment: Alignment.centerLeft,
+              
+              child: Text(
+                'Past Attempts',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromRGBO(34, 34, 34, 1)),
+              ),
+            ),
+          ),
+
+          // Past attempts list
+          attemptsList(theme)
         ],
       ),
     );
   }
-}
-/*
-InkWell(
-            onTap: () => {
-              quizIntro(widget.moduleName)
-            },
 
-            child: Hero(
-              tag: 'thumbnail',
-              child: Ink.image(
-                image: AssetImage('assets/Gospel E-Booklet Thumbnail.png'),
-                fit: BoxFit.contain
-              ),
-            ),
-          ),*/
+  Padding attemptsList(theme) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, left: 32.0, right: 32.0),
+
+      child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          reverse: true,
+          itemCount: quizAttempts.length,
+          itemBuilder: (context, index) {
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+
+              child: Container(
+                height: 70,
+                  decoration: BoxDecoration(
+                    color: quizAttempts[index].scorePercentage == null
+                        ? Color.fromRGBO(217, 217, 217, 1)
+                        : quizAttempts[index].scorePercentage == 100
+                            ? activeColorGreen
+                            : quizAttempts[index].scorePercentage >= 66
+                                ? Color.fromRGBO(26, 190, 242, 1)
+                                : quizAttempts[index].scorePercentage >= 33
+                                    ? Color.fromRGBO(242, 195, 26, 1)
+                                    : Color.fromRGBO(255, 124, 124, 1),
+                    borderRadius: BorderRadius.all(Radius.circular(7.6)),
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints.tightFor(),
+
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  spreadRadius: 0.5,
+                                  blurRadius: 1,
+                                  offset: Offset(2, 1),
+                                  blurStyle: BlurStyle.normal),
+                            ]),
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Row(children: [
+
+                                Padding(
+                                    padding: EdgeInsets.only(left: 8),
+                                    child: CircularPercentIndicator(
+                                      radius: 24.0,
+                                      lineWidth: 4.0,
+                                      animation: true,
+                                      percent: (quizAttempts[index]
+                                                      .scorePercentage ==
+                                                  "" ||
+                                              quizAttempts[index]
+                                                      .scorePercentage ==
+                                                  null)
+                                          ? 0
+                                          : (quizAttempts[index]
+                                                  .scorePercentage! /
+                                              100),
+                                      progressColor: quizAttempts[index]
+                                                  .scorePercentage ==
+                                              null
+                                          ? Color.fromRGBO(217, 217, 217, 1)
+                                          : quizAttempts[index]
+                                                      .scorePercentage ==
+                                                  100
+                                              ? activeColorGreen
+                                              : quizAttempts[index]
+                                                          .scorePercentage >=
+                                                      66
+                                                  ? Color.fromRGBO(
+                                                      26, 190, 242, 1)
+                                                  : quizAttempts[index]
+                                                              .scorePercentage >=
+                                                          33
+                                                      ? Color.fromRGBO(
+                                                          242, 195, 26, 1)
+                                                      : Color.fromRGBO(
+                                                          255, 124, 124, 1),
+                                      center: Text(
+                                        (quizAttempts[index].scorePercentage ==
+                                                null)
+                                            ? "0%"
+                                            : quizAttempts[index]
+                                                    .scorePercentage!
+                                                    .toStringAsFixed(0) +
+                                                "%",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300,
+                                            color: Color.fromRGBO(
+                                                67, 77, 94, 1)),
+                                      ),
+                                )),
+
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      'Attempt ${quizAttempts[index].attemptNum!}',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: paragraphFont),
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                            ),
+                            
+                            Padding(
+                              padding: const EdgeInsets.only(top: 18.0, bottom: 18, right: 14),
+
+                              child: Text(
+                                DateFormat().add_yMMMMd().format(quizAttempts[index].createdDate!),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w100,
+                                    color: paragraphFont),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  )),
+            );
+          }),
+    );
+  }
+}

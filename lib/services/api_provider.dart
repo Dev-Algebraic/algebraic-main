@@ -98,6 +98,20 @@ class GetQuizApiProvider extends BaseService {
   }
 }
 
+class GetScoreByModuleIdApiProvider extends BaseService {
+  Future<dynamic> getScoreByModuleId(moduleId, userId) async {
+    Response response;
+
+    response = await getRequest("modules/score/attempts/module/$moduleId/$userId");
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('An exception occured');
+    }
+  }
+}
+
 class GetTopicContentApiProvider extends BaseService {
   Future<dynamic> getTopicContentAPI(id) async {
     Response response;
