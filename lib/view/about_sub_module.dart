@@ -140,7 +140,7 @@ class _AboutSubmoduleState extends State<AboutSubmodule> {
               Navigator.pop(context);
             },
             child: Row(
-              children: const [Icon(Icons.arrow_back_ios)],
+              children: const [Icon(Icons.arrow_back_ios, color: Colors.white,)],
             ),
           ),
         ),
@@ -242,202 +242,14 @@ class _AboutSubmoduleState extends State<AboutSubmodule> {
                   ),
                 ),
               ]),
-        bottomNavigationBar: BottomAppBar(
-            child: SizedBox(
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, dashboardRoute);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(CustomIcons.home),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          const Text(
-                            'Home',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(34, 34, 34, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, formulaSheetRoute);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(CustomIcons.formula),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          const Text(
-                            'Formula',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(34, 34, 34, 1)),
-                          )
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        quizIntro();
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(CustomIcons.quiz),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          const Text(
-                            'Quiz',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(34, 34, 34, 1)),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ))),
       ),
     );
   }
 
-  Future<void> quizIntro() async {
-    await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: CircleAvatar(
-                      radius: 13,
-                      backgroundColor: themeColor,
-                      child: CircleAvatar(
-                          radius: 11,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.close,
-                            size: 17,
-                            color: themeColor,
-                          ))),
-                )
-              ],
-            ),
-            backgroundColor: Colors.white,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(5.0),
-              ),
-            ),
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return PopScope(
-                  canPop: true,
-                  onPopInvokedWithResult: (bool didPop, Object? result) async {
-                    if (!didPop) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: SizedBox(
-                    width: 450,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Welcome to the ${widget.moduleName} Quiz!',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 22,
-                                color: Color.fromRGBO(34, 34, 34, 1)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: Text(
-                              '''This quiz has 10 questions and will test your knowledge on all of the lessons in this chapter. As you go through the quiz, at each question after question 1, your score will be displayed at the bottom right-hand side of the screen. Read the solutions after each question if you did not understand the question and keep track of the questions/topics you are not understanding. If you get less than 10 questions correct and/or you get all of the questions wrong in a particular topic at the end of the quiz, | would advise you to go through the lessons again. When you are ready, click the Start Quiz button. Good Luck!''',
-                              style: TextStyle(
-                                  height: 2,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: paragraphFont),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: Row(
-                              children: [Expanded(child: startQuizButton())],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        });
-  }
   @override
   void dispose() {
     //...
     super.dispose();
     //...
-  }
-
-  SizedBox startQuizButton() {
-    return SizedBox(
-      height: 50,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(9))),
-            backgroundColor: activeColorGreen,
-            elevation: 0),
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Quiz(
-                      currentQNo: 0,
-                      score: 0,
-                      quizAnswers: [],
-                      quizList: [],
-                      quizAttempt: widget.quizattempt,
-                      moduleId: widget.moduleId,
-                      userId: userDetails.id,
-                      moduleName: widget.moduleName,
-                      moduleDescription: widget.moduleDescription)));
-        },
-        child: const Text(
-          'Start Quiz',
-          style: TextStyle(
-              fontWeight: FontWeight.w400, fontSize: 14, color: Colors.white),
-        ),
-      ),
-    );
   }
 }

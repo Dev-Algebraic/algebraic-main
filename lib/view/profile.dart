@@ -1,6 +1,7 @@
 import 'package:algebraic/utils/constants.dart';
 import 'package:algebraic/view/components/textformfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:algebraic/models/user.dart';
 
 import '../../utils/sharedpref.dart';
 import 'package:algebraic/routes/route_constants.dart';
@@ -14,6 +15,31 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  // Load user data
+  bool isloading = true;
+
+  UserDetails? user;
+  UserDetails userDetails = UserDetails();
+  
+  Future<void> getInitialValue() async {
+    setState(() {
+      isloading = true;
+    });
+    SharedPref sharedPref = SharedPref();
+    user = UserDetails.fromJson(await sharedPref.read("user"));
+    setState(() {
+      userDetails = user!;
+      isloading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getInitialValue();
+    super.initState();
+  }
+
   AppBar appBar() {
     return AppBar(
       elevation: 0,
@@ -49,7 +75,7 @@ class _ProfileState extends State<Profile> {
             radius: 14,
             backgroundColor: activeColorGreen,
             child: Text(
-              'V',
+              userDetails.firstName![0].toUpperCase(),
               style: TextStyle(
                   fontSize: 13.85,
                   fontWeight: FontWeight.w700,
@@ -89,11 +115,23 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return WillPopScope(
       onWillPop: () async {
         return true;
       },
-      child: Scaffold(
+      child: isloading
+        ? Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: themeColor,
+                strokeWidth: 2,
+              ),
+            ),
+          )
+        : Scaffold(
         appBar: appBar(),
         body: Padding(
           padding: const EdgeInsets.only(left: 25.0, right: 19),
