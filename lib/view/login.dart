@@ -205,6 +205,7 @@ class _LoginState extends State<Login> {
       child: IgnorePointer(
         ignoring: isLoading,
         child: Scaffold(
+          backgroundColor: Colors.white,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             leadingWidth: 70,

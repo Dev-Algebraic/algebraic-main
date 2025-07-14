@@ -2,6 +2,7 @@ import 'package:algebraic/view/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:algebraic/navbar_controller.dart';
 import '../utils/constants.dart';
 
 class Introduction extends StatefulWidget {
@@ -11,23 +12,17 @@ class Introduction extends StatefulWidget {
   State<Introduction> createState() => _IntroductionState();
 }
 
-const htmlData = r""" <h1 style = font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 36px;
+const htmlData = r"""
+  <h1 style="font-family: 'Inter'; font-style: normal; font-weight: 400; font-size: 36px; color: #000000;">
+    Welcome to <br>Algebraic!
+  </h1>
+  <p style="font-family: 'Inter'; font-style: normal; font-weight: 400; color: #000000;">
+    This app goes over all of the major topics in Algebra 1 and can be used as study material to understand topics in Algebra 1 and test your knowledge to help prepare for class tests and the EOC at the end of the year.
+    Click on the various buttons to go to content, practice tests, and a main information page that includes the most important facts to know for the EOC.
+    <br><br>
+  </p>
+""";
 
-color: #434D5E;>Welcome to 
-
-  <br>Algebraic!</h1>
-  <p>This app goes over all of the major topics in Algebra 1 and can be used a study material to understand topics in Algebra 1 and test your knowledge to help prepare for class tests and the EOC at the end of the year.
-Click on the various buttons to go to content, practice tests and a main information page that includes the most important facts to know for the EOC.
-<br><br>
-
-
-
-  
-  
-  </p>""";
 
 class _IntroductionState extends State<Introduction> {
   @override
@@ -39,6 +34,7 @@ class _IntroductionState extends State<Introduction> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           leadingWidth: 70,
@@ -113,7 +109,7 @@ class _IntroductionState extends State<Introduction> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const Dashboard()));
+                                      const NavigationBarApp()));
                         },
                         child: Icon(
                           Icons.arrow_circle_right,

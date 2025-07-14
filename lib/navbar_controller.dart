@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:algebraic/utils/sharedpref.dart';
 
 // Import screens
 import 'package:algebraic/main.dart';
 import 'package:algebraic/view/formulasheet.dart';
 import 'package:algebraic/view/profile.dart';
+import 'package:algebraic/view/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +49,24 @@ class NavigationController extends StatefulWidget {
 // Navigation bar
 class _NavigationControllerState extends State<NavigationController> {
   int currentPageIndex = 0;
+  bool loader = true;
+  dynamic sessionUser;
+
+  @override
+  void initState() {
+    getInitial();
+    super.initState();
+  }
+
+  Future<void> getInitial() async {
+    SharedPref sharedPref = SharedPref();
+
+    sessionUser = await sharedPref.read("user");
+
+    setState(() {
+      loader = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +77,13 @@ class _NavigationControllerState extends State<NavigationController> {
     bool isiOS = Theme.of(context).platform == TargetPlatform.iOS;
     final ThemeData theme = Theme.of(context);
 
-    return isiOS 
-      // iOS
-      ? iosNavbar(theme)
-      // Android
-      : andoirdNavbar(theme);
+    return !loader
+      ? (sessionUser == null
+          ? const Login()
+          : (isiOS
+              ? iosNavbar(theme)
+              : andoirdNavbar(theme)))
+      : const CircularProgressIndicator();
   }
 
   // iOS navbar

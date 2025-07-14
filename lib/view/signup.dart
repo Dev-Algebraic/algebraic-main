@@ -187,6 +187,7 @@ class _SignUpState extends State<SignUp> {
       child: IgnorePointer(
         ignoring: isLoading,
         child: Scaffold(
+          backgroundColor: Colors.white,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             leadingWidth: 70,

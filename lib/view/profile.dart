@@ -1,5 +1,6 @@
 import 'package:algebraic/utils/constants.dart';
 import 'package:algebraic/view/components/textformfield_widget.dart';
+import 'package:algebraic/view/login.dart';
 import 'package:flutter/material.dart';
 import 'package:algebraic/models/user.dart';
 
@@ -131,9 +132,13 @@ class _ProfileState extends State<Profile> {
 
   Future<void> onLogout() async {
     SharedPref sharedPref = SharedPref();
+    final navigator = Navigator.of(context, rootNavigator: true);
 
     await sharedPref.remove("user");
-    Navigator.pushNamed(context, loginRoute);
+    if (!mounted) return; // <- Prevents calling context if widget is disposed
+    navigator.pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => Login()));
   }
 
   @override
