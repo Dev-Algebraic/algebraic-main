@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 String iconPath = "assets/svg/";
+String pdfPath = "assets/pdfs/";
 
 Color themeColor = Color.fromRGBO(62, 81, 141, 1);
 Color activeColorGreen = Color.fromRGBO(161, 195, 21, 1);

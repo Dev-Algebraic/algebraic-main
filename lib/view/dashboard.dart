@@ -161,165 +161,169 @@ class _DashboardState extends State<Dashboard> {
           shrinkWrap: true,
           itemCount: modulesList.length,
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AboutModule(quizattempt:modulesList[index].quizAttempt,
-                            moduleId: modulesList[index].order_no,
-                            moduleName: modulesList[index].name,
-                            moduleDescription: modulesList[index].description,
-                            module: modulesList[index],
-                    )));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: Container(
-                    //  height: 74,
-                    decoration: BoxDecoration(
-                      color: modulesList[index].scorePercentage == null
-                          ? Color.fromRGBO(217, 217, 217, 1)
-                          : modulesList[index].scorePercentage == 100
-                              ? activeColorGreen
-                              : modulesList[index].scorePercentage >= 66
-                                  ? Color.fromRGBO(26, 190, 242, 1)
-                                  : modulesList[index].scorePercentage >= 33
-                                      ? Color.fromRGBO(242, 195, 26, 1)
-                                      : Color.fromRGBO(255, 124, 124, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(7.6)),
-                      // border: Border(
-                      //     left: BorderSide(color: activeColorGreen, width: 4)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints.tightFor(
-                            //height: 74,
-                            ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
+            return Padding(
+              padding: EdgeInsets.only(bottom: 12.0),
+
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AboutModule(quizattempt:modulesList[index].quizAttempt,
+                              moduleId: modulesList[index].order_no,
+                              moduleName: modulesList[index].name,
+                              moduleDescription: modulesList[index].description,
+                              module: modulesList[index],
+                      )));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 3.0),
+                  child: Container(
+                      //  height: 74,
+                      decoration: BoxDecoration(
+                        color: modulesList[index].scorePercentage == null
+                            ? Color.fromRGBO(217, 217, 217, 1)
+                            : modulesList[index].scorePercentage == 100
+                                ? activeColorGreen
+                                : modulesList[index].scorePercentage >= 66
+                                    ? Color.fromRGBO(26, 190, 242, 1)
+                                    : modulesList[index].scorePercentage >= 33
+                                        ? Color.fromRGBO(242, 195, 26, 1)
+                                        : Color.fromRGBO(255, 124, 124, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(7.6)),
+                        // border: Border(
+                        //     left: BorderSide(color: activeColorGreen, width: 4)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints.tightFor(
+                              //height: 74,
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                    spreadRadius: 0.5,
-                                    blurRadius: 1,
-                                    offset: Offset(2, 1),
-                                    blurStyle: BlurStyle.normal),
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Row(children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(left: 11),
-                                      child: CircularPercentIndicator(
-                                        radius: 25.0,
-                                        lineWidth: 4.0,
-                                        animation: true,
-                                        percent: (modulesList[index]
-                                                        .scorePercentage ==
-                                                    "" ||
-                                                modulesList[index]
-                                                        .scorePercentage ==
-                                                    null)
-                                            ? 0
-                                            : (modulesList[index]
-                                                    .scorePercentage! /
-                                                100),
-                                        progressColor: modulesList[index]
-                                                    .scorePercentage ==
-                                                null
-                                            ? Color.fromRGBO(217, 217, 217, 1)
-                                            : modulesList[index]
-                                                        .scorePercentage ==
-                                                    100
-                                                ? activeColorGreen
-                                                : modulesList[index]
-                                                            .scorePercentage >=
-                                                        66
-                                                    ? Color.fromRGBO(
-                                                        26, 190, 242, 1)
-                                                    : modulesList[index]
-                                                                .scorePercentage >=
-                                                            33
-                                                        ? Color.fromRGBO(
-                                                            242, 195, 26, 1)
-                                                        : Color.fromRGBO(
-                                                            255, 124, 124, 1),
-                                        center: Text(
-                                          (modulesList[index].scorePercentage ==
-                                                  null)
-                                              ? "0%"
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      spreadRadius: 0.5,
+                                      blurRadius: 1,
+                                      offset: Offset(2, 1),
+                                      blurStyle: BlurStyle.normal),
+                                ]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Row(children: [
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 11),
+                                        child: CircularPercentIndicator(
+                                          radius: 25.0,
+                                          lineWidth: 4.0,
+                                          animation: true,
+                                          percent: (modulesList[index]
+                                                          .scorePercentage ==
+                                                      "" ||
+                                                  modulesList[index]
+                                                          .scorePercentage ==
+                                                      null)
+                                              ? 0
+                                              : (modulesList[index]
+                                                      .scorePercentage! /
+                                                  100),
+                                          progressColor: modulesList[index]
+                                                      .scorePercentage ==
+                                                  null
+                                              ? Color.fromRGBO(217, 217, 217, 1)
                                               : modulesList[index]
-                                                      .scorePercentage!
-                                                      .toStringAsFixed(0) +
-                                                  "%",
+                                                          .scorePercentage ==
+                                                      100
+                                                  ? activeColorGreen
+                                                  : modulesList[index]
+                                                              .scorePercentage >=
+                                                          66
+                                                      ? Color.fromRGBO(
+                                                          26, 190, 242, 1)
+                                                      : modulesList[index]
+                                                                  .scorePercentage >=
+                                                              33
+                                                          ? Color.fromRGBO(
+                                                              242, 195, 26, 1)
+                                                          : Color.fromRGBO(
+                                                              255, 124, 124, 1),
+                                          center: Text(
+                                            (modulesList[index].scorePercentage ==
+                                                    null)
+                                                ? "0%"
+                                                : modulesList[index]
+                                                        .scorePercentage!
+                                                        .toStringAsFixed(0) +
+                                                    "%",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                                color: Color.fromRGBO(
+                                                    67, 77, 94, 1)),
+                                          ),
+                                        )),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 11),
+                                        child: Text(
+                                          modulesList[index].name!,
                                           style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w300,
-                                              color: Color.fromRGBO(
-                                                  67, 77, 94, 1)),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: paragraphFont),
                                         ),
-                                      )),
-                                  Expanded(
+                                      ),
+                                    ),
+                                  ]),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 18.0, bottom: 18, right: 14),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(235, 238, 248, 1),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 11),
-                                      child: Text(
-                                        modulesList[index].name!,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: paragraphFont),
+                                      padding: const EdgeInsets.all(7.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Attempt',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color.fromRGBO(
+                                                    62, 81, 141, 1)),
+                                          ),
+                                          Text(
+                                            (modulesList[index].quizAttempt ?? 0)
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color.fromRGBO(
+                                                    62, 81, 141, 1)),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ]),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 18.0, bottom: 18, right: 14),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(235, 238, 248, 1),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(7.0),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Attempt',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color.fromRGBO(
-                                                  62, 81, 141, 1)),
-                                        ),
-                                        Text(
-                                          (modulesList[index].quizAttempt ?? 0)
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color.fromRGBO(
-                                                  62, 81, 141, 1)),
-                                        )
-                                      ],
-                                    ),
-                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )),
+                      )),
+                ),
               ),
             );
           }),

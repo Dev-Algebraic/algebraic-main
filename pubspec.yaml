@@ -43,6 +43,8 @@ dependencies:
   email_validator: ^3.0.0
   skeletons: ^0.0.3
   flutter_pdfview: ^1.2.9
+  syncfusion_flutter_pdfviewer: ^30.1.37
+  syncfusion_flutter_core: ^30.1.37
   path_provider: ^2.0.13
   flutter_cache_manager: ^3.3.0
 
@@ -71,6 +73,16 @@ flutter:
 
   assets:
     - assets/svg/
+    - assets/pdfs/
+    - assets/pdfs/Absolute Value Functions/
+    - assets/pdfs/Equations and Inequalities/
+    - assets/pdfs/Exponential Functions and Financial Literacy/
+    - assets/pdfs/Exponents and Radicals/
+    - assets/pdfs/Functions/
+    - assets/pdfs/Linear Functions/
+    - assets/pdfs/Polynomials/
+    - assets/pdfs/Probability and Statistics/
+    - assets/pdfs/Quadratics/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -102,6 +102,7 @@ class _AboutSubmoduleState extends State<AboutSubmodule> {
   UserDetails? user;
   UserDetails userDetails = UserDetails();
   bool alreadyRead = false;
+
   Future<void> getInitialValue() async {
     setState(() {
       isLoading = true;
@@ -112,7 +113,6 @@ class _AboutSubmoduleState extends State<AboutSubmodule> {
       userDetails = user!;
       isLoading = false;
     });
-    // getContentList();
     for (var read in widget.readTopicList!) {
       if (read["topic_fk"] == widget.topicId) {
         alreadyRead = true;
@@ -124,6 +124,7 @@ class _AboutSubmoduleState extends State<AboutSubmodule> {
   @override
   void initState() {
     getInitialValue();
+
     super.initState();
   }
 

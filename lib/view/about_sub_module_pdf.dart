@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:algebraic/app_config.dart';
 import 'package:algebraic/routes/route_constants.dart';
 import 'package:algebraic/view/quiz.dart';
+import 'package:algebraic/utils/pdfassetmanager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -15,6 +16,8 @@ import '../models/user.dart';
 import '../services/api_provider.dart';
 import '../utils/constants.dart';
 import '../utils/sharedpref.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class AboutSubmodulePdf extends StatefulWidget {
   final int? topicId;
@@ -48,11 +51,10 @@ class AboutSubmodulePdf extends StatefulWidget {
 class _AboutSubmodulePdfState extends State<AboutSubmodulePdf>
     with TickerProviderStateMixin {
   bool isLoading = false;
-  final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
-  TabController? pageController;
+
   int? pages = 0;
   int? currentPage = 0;
+  
   Future<void> postRead() async {
     setState(() => isLoading = true);
     PostReadApiProvider read = PostReadApiProvider();
@@ -84,47 +86,22 @@ class _AboutSubmodulePdfState extends State<AboutSubmodulePdf>
     }
   }
 
-  // getContentList() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   GetTopicContentApiProvider topicContent = GetTopicContentApiProvider();
-  //   try {
-  //     await topicContent.getTopicContentAPI(widget.topicId).then((op) => {
-  //           setState(() {
-  //             if (op["data"] != null) {
-  //               // htmlData = op["data"][0]["content"];
-
-  //             } else {
-  //               Fluttertoast.showToast(msg: op["error"]);
-  //             }
-  //           }),
-  //           setState(() {
-  //             isLoading = false;
-  //           })
-  //         });
-  //   } catch (e) {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //     Fluttertoast.showToast(msg: 'An error occurred.Please try again.');
-  //   }
-  // }
-
   UserDetails? user;
   UserDetails userDetails = UserDetails();
   bool alreadyRead = false;
   String? landscapePathPdf;
+
   Future<void> getInitialValue() async {
     setState(() {
       isLoading = true;
     });
     SharedPref sharedPref = SharedPref();
     user = UserDetails.fromJson(await sharedPref.read("user"));
+
     setState(() {
       userDetails = user!;
     });
-    // getContentList();
+
     for (var read in widget.readTopicList!) {
       if (read["topic_fk"] == widget.topicId) {
         alreadyRead = true;
@@ -135,44 +112,22 @@ class _AboutSubmodulePdfState extends State<AboutSubmodulePdf>
 
   @override
   void initState() {
-    pageController = TabController(length: 1, vsync: this);
     getInitialValue();
+    
     if (widget.pdfFile != null) {
       loadNetwork();
     }
+
     super.initState();
-    // fromAsset(CustomIcons.pdf, 'Adding and Subtracting Polynomials.pdf')
-    //     .then((f) {
-    //   setState(() {
-    //     landscapePathPdf = f.path;
-    //   });
-    // });
-  }
-
-  Future<File> fromAsset(String asset, String filename) async {
-    // To open from assets, you can copy them to the app storage folder, and the access them "locally"
-    Completer<File> completer = Completer();
-
-    try {
-      var dir = await getApplicationDocumentsDirectory();
-      File file = File("${dir.path}/$filename");
-      var data = await rootBundle.load(asset);
-      var bytes = data.buffer.asUint8List();
-      await file.writeAsBytes(bytes, flush: true);
-      completer.complete(file);
-    } catch (e) {
-      throw Exception('Error parsing asset file!');
-    }
-
-    return completer.future;
   }
 
   File? pfile;
   Future<void> loadNetwork() async {
+
     var url = URLIdentifier.BASE_URL + widget.pdfFile!;
     final response = await http.get(Uri.parse(url));
     final bytes = response.bodyBytes;
-    // final filename = basename(url);
+
     final dir = await getApplicationDocumentsDirectory();
     var file = File('${dir.path}/ ${widget.pdfFile!}');
     await file.writeAsBytes(bytes, flush: true);
@@ -228,6 +183,8 @@ class _AboutSubmodulePdfState extends State<AboutSubmodulePdf>
       );
     }
 
+    String pdfUrl = getPdfUrl(widget.moduleName, widget.topicName);
+
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -248,115 +205,19 @@ class _AboutSubmodulePdfState extends State<AboutSubmodulePdf>
             : Column(
                 children: [
                   Expanded(
-                    child: PDFView(
-                      swipeHorizontal: true,
-                      fitPolicy: FitPolicy.BOTH,
-                      fitEachPage: true,
-                      filePath:pfile!.path,
-                      // defaultPage: currentPage!,
-                      onViewCreated: (PDFViewController pdfViewController) {
-                        _controller.complete(pdfViewController);
-                      },
-                      onRender: (pages) {
-                         pageController = TabController(length: pages!, vsync: this,animationDuration: Duration(seconds: 1));
-                        setState(() {
-                          pages = pages;
-                        });
-                      },
-                      onPageChanged: (int? page, int? total) {
-                        pageController!.index=page!;
-
-                        // pageController.animateToPage(
-                        //   page!,
-                        //   duration: const Duration(milliseconds: 400),
-                        //   curve: Curves.easeInOut,
-                        // );
-                        currentPage = page;
-                        setState(() {});
-                      },
+                    child: SafeArea(
+                      child: SfPdfViewerTheme(
+                        data: SfPdfViewerThemeData(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: SfPdfViewer.asset(
+                          pdfUrl,
+                          pageLayoutMode: PdfPageLayoutMode.continuous,
+                          canShowScrollHead: true,
+                        ),
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 3),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // FutureBuilder<PDFViewController>(
-                        //     future: _controller.future,
-                        //     builder: (context,
-                        //         AsyncSnapshot<PDFViewController> snapshot) {
-                        //       if (snapshot.hasData && currentPage != 0) {
-                        //         return InkWell(
-                        //           onTap: () async {
-                        //             currentPage = currentPage! - 1;
-                        //             await snapshot.data!.setPage(currentPage!);
-                        //           },
-                        //           child: const Center(
-                        //             child: Icon(
-                        //               Icons.arrow_back_rounded,
-                        //               color: Colors.black54,
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }
-                        //       return const Center(
-                        //         child: Icon(
-                        //           Icons.arrow_forward_rounded,
-                        //           color: Colors.white,
-                        //         ),
-                        //       );
-                        //     }),
-                        TabPageSelector(controller: pageController,
-                        selectedColor: themeColor),
-                      
-                        // Text(
-                        //   "Page " +
-                        //       (currentPage! + 1).toString() +
-                        //       " of $pages",
-                        //   style: const TextStyle(
-                        //       fontSize: 12,
-                        //       fontWeight: FontWeight.w500,
-                        //       color: Colors.black54),
-                        // ),
-                        // FutureBuilder<PDFViewController>(
-                        //     future: _controller.future,
-                        //     builder: (context,
-                        //         AsyncSnapshot<PDFViewController> snapshot) {
-                        //       if (snapshot.hasData &&
-                        //           currentPage! < pages! - 1) {
-                        //         return InkWell(
-                        //           onTap: () async {
-                        //             currentPage = currentPage! + 1;
-                        //             await snapshot.data!.setPage(currentPage!);
-                        //           },
-                        //           child: const Center(
-                        //             child: Icon(
-                        //               Icons.arrow_forward_rounded,
-                        //               color: Colors.black54,
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }
-                        //       return const Center(
-                        //         child: Icon(
-                        //           Icons.arrow_forward_rounded,
-                        //           color: Colors.white,
-                        //         ),
-                        //       );
-                        //     }),
-                      ],
-                    ),
-                  ),
-
-                  // IconButton(
-                  //     onPressed: () {
-                  //       // _controller.setPage(pages! ~/ 2)
-                  //     },
-                  //     icon: const Icon(
-                  //       Icons.arrow_forward_ios,
-                  //       color: Colors.black,
-                  //     ))
                 ],
               ),
       ),

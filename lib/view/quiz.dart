@@ -1152,8 +1152,6 @@ class _QuizState extends State<Quiz> {
       context: context,
       builder: (context) {
         return
-            // WillPopScope(
-            //   onWillPop: () async => false,
             WillPopScope(
           onWillPop: () async => false,
           child: Dialog(
@@ -1217,36 +1215,7 @@ class _QuizState extends State<Quiz> {
                             ),
                           ],
                         )
-                        //  TeXView(
-                        //     renderingEngine: const TeXViewRenderingEngine.katex(),
-                        //     child: TeXViewDocument(
-                        //       quizList[currentQuestion].answerHint!,
-                        //     ),
-                        //     style: TeXViewStyle(
-                        //         margin: TeXViewMargin.zeroAuto(),
-                        //         fontStyle: TeXViewFontStyle(
-                        //           fontSize: 16,
-                        //           fontWeight: TeXViewFontWeight.w400,
-                        //         ),
-                        //         contentColor: paragraphFont))
-
-                        // Text(
-                        //   quizList[currentQuestion].answerHint!,
-                        //   style: TextStyle(
-                        //       height: 2,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontSize: 12,
-                        //       color: paragraphFont),
-                        // ),
                         ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 20.0),
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(child: continueNext(quizAnswers))
-                    //     ],
-                    //   ),
-                    // )
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Row(
@@ -1264,116 +1233,6 @@ class _QuizState extends State<Quiz> {
       },
     );
   }
-
-  // onSubmit(answer, quizAnswers) async {
-  //   await showDialog(
-  //       barrierDismissible: false,
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return Dialog(
-  //           backgroundColor: Colors.white,
-  //           shape: const RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.all(
-  //               Radius.circular(5.0),
-  //             ),
-  //           ),
-  //           content: StatefulBuilder(
-  //             builder: (BuildContext context, StateSetter setState) {
-  //               return WillPopScope(
-  //                 onWillPop: () async {
-  //                   return false;
-  //                 },
-  //                 child: SizedBox(
-  //                   width: 400,
-  //                   child: SingleChildScrollView(
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: <Widget>[
-  //                         answer == quizAnswerOption
-  //                             ? Text(
-  //                                 'Correct Answer',
-  //                                 style: TextStyle(
-  //                                     fontWeight: FontWeight.w500,
-  //                                     fontSize: 20.35,
-  //                                     color: Color.fromRGBO(56, 193, 114, 1)),
-  //                               )
-  //                             : Text(
-  //                                 'Wrong Answer',
-  //                                 style: TextStyle(
-  //                                     fontWeight: FontWeight.w500,
-  //                                     fontSize: 20.35,
-  //                                     color: Color.fromRGBO(227, 52, 47, 1)),
-  //                               ),
-  //                         Padding(
-  //                           padding: const EdgeInsets.only(
-  //                             top: 15.0,
-  //                           ),
-  //                           child: Text(
-  //                             'Here is how to do the problem!',
-  //                             style: TextStyle(
-  //                                 fontWeight: FontWeight.w400,
-  //                                 fontSize: 17,
-  //                                 color: Color.fromRGBO(34, 34, 34, 1)),
-  //                           ),
-  //                         ),
-  //                         Padding(
-  //                             padding: const EdgeInsets.only(top: 10.0),
-  //                             child: TeXView(
-  //                                 renderingEngine:
-  //                                     const TeXViewRenderingEngine.katex(),
-  //                                 child: TeXViewDocument(
-  //                                   quizList[currentQuestion].answerHint!,
-  //                                 ),
-  //                                 style: TeXViewStyle(
-  //                                     margin: TeXViewMargin.zeroAuto(),
-  //                                     fontStyle: TeXViewFontStyle(
-  //                                       fontSize: 16,
-  //                                       fontWeight: TeXViewFontWeight.w400,
-  //                                     ),
-  //                                     contentColor: paragraphFont))
-
-  //                             // Text(
-  //                             //   quizList[currentQuestion].answerHint!,
-  //                             //   style: TextStyle(
-  //                             //       height: 2,
-  //                             //       fontWeight: FontWeight.w400,
-  //                             //       fontSize: 12,
-  //                             //       color: paragraphFont),
-  //                             // ),
-  //                             ),
-  //                         // Padding(
-  //                         //   padding: const EdgeInsets.only(top: 20.0),
-  //                         //   child: Row(
-  //                         //     children: [
-  //                         //       Expanded(child: continueNext(quizAnswers))
-  //                         //     ],
-  //                         //   ),
-  //                         // )
-  //                         Padding(
-  //                           padding: const EdgeInsets.only(top: 10),
-  //                           child: Row(
-  //                             children: [
-  //                               Expanded(child: continueNext(quizAnswers)),
-  //                             ],
-  //                           ),
-  //                         )
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               );
-  //             },
-  //           ),
-  //           // actions: [
-  //           //   Row(
-  //           //     children: [
-  //           //       Expanded(child: continueNext(quizAnswers)),
-  //           //     ],
-  //           //   )
-  //           // ],
-  //         );
-  //       });
-  // }
 
   Future<void> endQuiz() async {
     await showDialog(

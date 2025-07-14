@@ -5,12 +5,15 @@ import 'package:algebraic/app_config.dart';
 import 'package:algebraic/models/user.dart';
 import 'package:algebraic/utils/sharedpref.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../services/api_provider.dart';
 import '../utils/constants.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class FormulaSheet extends StatefulWidget {
   final bool isSubview;
@@ -23,14 +26,12 @@ class FormulaSheet extends StatefulWidget {
 
 class _FormulaSheetState extends State<FormulaSheet> with TickerProviderStateMixin  {
   bool isLoading = true;
-  List htmlData = [];
-  final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
-  TabController? pageController;
+  String htmlData = "";
   int? pages = 0;
   int? currentPage = 0;
   String pdfFile="formula sheet.pdf";
   UserDetails userDetails = UserDetails();
+
   Future<void> getContentList() async {
     setState(() {
       isLoading = true;
@@ -40,7 +41,7 @@ class _FormulaSheetState extends State<FormulaSheet> with TickerProviderStateMix
       await formulaSheet.getFormulaSheetAPI().then((op) => {
             setState(() {
               if (op["data"] != null) {
-                htmlData = op["data"];
+                htmlData = op["data"][0]['content'];
               } else {
                 Fluttertoast.showToast(msg: op["error"]);
               }
@@ -69,7 +70,6 @@ class _FormulaSheetState extends State<FormulaSheet> with TickerProviderStateMix
       pfile = file;
     });
 
-    print(pfile);
     setState(() {
       isLoading = false;
     });
@@ -133,9 +133,11 @@ class _FormulaSheetState extends State<FormulaSheet> with TickerProviderStateMix
 
   @override
   void initState() {
-      pageController = TabController(length: 1, vsync: this);
+
     loadNetwork();
     getSession();
+    getContentList();
+
     super.initState();
   }
   @override
@@ -165,115 +167,19 @@ class _FormulaSheetState extends State<FormulaSheet> with TickerProviderStateMix
             : Column(
                 children: [
                   Expanded(
-                    child: PDFView(
-                      swipeHorizontal: true,
-                      fitPolicy: FitPolicy.BOTH,
-                      fitEachPage: true,
-                      filePath:pfile!.path,
-                      // defaultPage: currentPage!,
-                      onViewCreated: (PDFViewController pdfViewController) {
-                        _controller.complete(pdfViewController);
-                      },
-                      onRender: (pages) {
-                         pageController = TabController(length: pages!, vsync: this,animationDuration: Duration(seconds: 1));
-                        setState(() {
-                          pages = pages;
-                        });
-                      },
-                      onPageChanged: (int? page, int? total) {
-                        pageController!.index=page!;
-
-                        // pageController.animateToPage(
-                        //   page!,
-                        //   duration: const Duration(milliseconds: 400),
-                        //   curve: Curves.easeInOut,
-                        // );
-                        currentPage = page;
-                        setState(() {});
-                      },
+                    child: SafeArea(
+                      child: SfPdfViewerTheme(
+                        data: SfPdfViewerThemeData(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: SfPdfViewer.asset(
+                          'assets/pdfs/Formula_Sheet.pdf',
+                          pageLayoutMode: PdfPageLayoutMode.continuous,
+                          canShowScrollHead: true,
+                        ),
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // FutureBuilder<PDFViewController>(
-                        //     future: _controller.future,
-                        //     builder: (context,
-                        //         AsyncSnapshot<PDFViewController> snapshot) {
-                        //       if (snapshot.hasData && currentPage != 0) {
-                        //         return InkWell(
-                        //           onTap: () async {
-                        //             currentPage = currentPage! - 1;
-                        //             await snapshot.data!.setPage(currentPage!);
-                        //           },
-                        //           child: const Center(
-                        //             child: Icon(
-                        //               Icons.arrow_back_rounded,
-                        //               color: Colors.black54,
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }
-                        //       return const Center(
-                        //         child: Icon(
-                        //           Icons.arrow_forward_rounded,
-                        //           color: Colors.white,
-                        //         ),
-                        //       );
-                        //     }),
-                        TabPageSelector(controller: pageController,
-                        selectedColor: themeColor),
-                      
-                        // Text(
-                        //   "Page " +
-                        //       (currentPage! + 1).toString() +
-                        //       " of $pages",
-                        //   style: const TextStyle(
-                        //       fontSize: 12,
-                        //       fontWeight: FontWeight.w500,
-                        //       color: Colors.black54),
-                        // ),
-                        // FutureBuilder<PDFViewController>(
-                        //     future: _controller.future,
-                        //     builder: (context,
-                        //         AsyncSnapshot<PDFViewController> snapshot) {
-                        //       if (snapshot.hasData &&
-                        //           currentPage! < pages! - 1) {
-                        //         return InkWell(
-                        //           onTap: () async {
-                        //             currentPage = currentPage! + 1;
-                        //             await snapshot.data!.setPage(currentPage!);
-                        //           },
-                        //           child: const Center(
-                        //             child: Icon(
-                        //               Icons.arrow_forward_rounded,
-                        //               color: Colors.black54,
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }
-                        //       return const Center(
-                        //         child: Icon(
-                        //           Icons.arrow_forward_rounded,
-                        //           color: Colors.white,
-                        //         ),
-                        //       );
-                        //     }),
-                      ],
-                    ),
-                  ),
-
-                  // IconButton(
-                  //     onPressed: () {
-                  //       // _controller.setPage(pages! ~/ 2)
-                  //     },
-                  //     icon: const Icon(
-                  //       Icons.arrow_forward_ios,
-                  //       color: Colors.black,
-                  //     ))
                 ],
               ),
       ),
