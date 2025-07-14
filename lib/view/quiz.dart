@@ -149,13 +149,17 @@ class _QuizState extends State<Quiz> {
     setState(() => isLoading = true);
     PostScoreProvider scoreApi = PostScoreProvider();
 
+    String createdDate = DateTime.now().toIso8601String();
+
     Map payLoad = {
       "userId": widget.userId,
       "moduleId": widget.moduleId,
       "score": score,
       "totalQuestion": quizList.length,
-      "createdBy": null
+      "createdBy": null,
+      "createdDate": createdDate,
     };
+    
     try {
       await scoreApi.postScoreAPI(payLoad).then(
         (op) async {

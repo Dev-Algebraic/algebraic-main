@@ -64,7 +64,9 @@ class _DashboardState extends State<Dashboard> {
 
   AppBar appBar() {
     return AppBar(
+      elevation: 0,
       backgroundColor: themeColor,
+      
       // toolbarHeight: 64,
       title: Row(
         children: [

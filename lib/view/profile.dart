@@ -44,22 +44,12 @@ class _ProfileState extends State<Profile> {
     return AppBar(
       elevation: 0,
       backgroundColor: themeColor,
-      // toolbarHeight: 64,
-      leading: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0),
-          child: Row(
-            children: [Icon(Icons.arrow_back_ios)],
-          ),
-        ),
-      ),
+      
+      leading: null,
       title: Row(
         children: [
           Text(
-            'Settings',
+            'Profile',
             style: TextStyle(
                 fontSize: 15.75,
                 fontWeight: FontWeight.w500,
@@ -67,6 +57,7 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
+
       centerTitle: false,
       actions: [
         Padding(
@@ -106,6 +97,38 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  SizedBox logoutButton() {
+    return SizedBox(
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(9)),
+              side: BorderSide(
+                color: Colors.red,
+                width: 1.0,
+              )
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0).copyWith(
+              overlayColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Colors.red.withAlpha(30);
+                }
+                return null;
+              }),
+              shadowColor: WidgetStateProperty.all(Colors.transparent),
+            ),
+        onPressed: () {onLogout();},
+        child: const Text(
+          'Logout',
+          style: TextStyle(
+              fontWeight: FontWeight.w400, fontSize: 14, color: Colors.red),
+        ),
+      ),
+    );
+  }
+
   Future<void> onLogout() async {
     SharedPref sharedPref = SharedPref();
 
@@ -132,127 +155,142 @@ class _ProfileState extends State<Profile> {
             ),
           )
         : Scaffold(
+        backgroundColor: Colors.white,
         appBar: appBar(),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 25.0, right: 19),
-          child: SingleChildScrollView(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      onLogout();
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.only(right: 30.0, top: 30),
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: const Color.fromRGBO(243, 244, 248, 1),
-                          child: SvgPicture.asset(CustomIcons.logout),
-                        )),
-                  ),
-                  const Text(
-                    'Profile',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 36,
-                        color: Color.fromRGBO(
-                          67,
-                          77,
-                          94,
-                          1,
-                        )),
-                  ),
-                  const Text(
-                    'Settings',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 36,
-                        color: Color.fromRGBO(
-                          67,
-                          77,
-                          94,
-                          1,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 37.0),
-                    child: const TextformWidget(
-                      initialValue: 'Vishnu', labelName: 'First Name',
+        body: Container(
+          color: Colors.white,
+          
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 19),
+            child: SingleChildScrollView(
+                child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
 
-                      // saved: (val) => eventName = val,
-                      // focusNode: nameFieldFocus,
-                      autofocus: false,
-                      isMandatory: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      capitalization: TextCapitalization.words,
+                    // Heading text
+                    const Text(
+                      'Profile Settings',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 36,
+                          color: Color.fromRGBO(
+                            67,
+                            77,
+                            94,
+                            1,
+                          )),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 14.0),
-                    child: TextformWidget(
-                      initialValue: 'Vishnu', labelName: 'Last Name',
 
-                      // saved: (val) => eventName = val,
-                      // focusNode: nameFieldFocus,
-                      autofocus: false,
-                      isMandatory: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      capitalization: TextCapitalization.words,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 14.0),
-                    child: TextformWidget(
-                      initialValue: '+91 9544546278',
-                      labelName: 'Phone Number',
-
-                      // saved: (val) => eventName = val,
-                      // focusNode: nameFieldFocus,
-                      autofocus: false,
-                      isMandatory: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      capitalization: TextCapitalization.words,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 14.0),
-                    child: TextformWidget(
-                      initialValue: 'Passcode094#21', labelName: 'Password',
-                      // saved: (val) => eventName = val,
-                      // focusNode: nameFieldFocus,
-                      autofocus: false,
-                      isMandatory: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      capitalization: TextCapitalization.words,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 14.0),
-                    child: TextformWidget(
-                      initialValue: '', labelName: 'Retype Password',
-                      // saved: (val) => eventName = val,
-                      // focusNode: nameFieldFocus,
-                      autofocus: false,
-                      isMandatory: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      capitalization: TextCapitalization.words,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                            padding: const EdgeInsets.only(top: 14.0),
-                            child: saveButton()),
+                    // Editable fields
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: const TextformWidget(
+                        initialValue: 'Vishnu', labelName: 'First Name',
+          
+                        // saved: (val) => eventName = val,
+                        // focusNode: nameFieldFocus,
+                        autofocus: false,
+                        isMandatory: true,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        capitalization: TextCapitalization.words,
                       ),
-                    ],
-                  ),
-                ]),
-          )),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 14.0),
+                      child: TextformWidget(
+                        initialValue: 'Vishnu', labelName: 'Last Name',
+          
+                        // saved: (val) => eventName = val,
+                        // focusNode: nameFieldFocus,
+                        autofocus: false,
+                        isMandatory: true,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        capitalization: TextCapitalization.words,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 14.0),
+                      child: TextformWidget(
+                        initialValue: '+91 9544546278',
+                        labelName: 'Phone Number',
+          
+                        // saved: (val) => eventName = val,
+                        // focusNode: nameFieldFocus,
+                        autofocus: false,
+                        isMandatory: true,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        capitalization: TextCapitalization.words,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 14.0),
+                      child: TextformWidget(
+                        initialValue: 'Passcode094#21', labelName: 'Password',
+                        // saved: (val) => eventName = val,
+                        // focusNode: nameFieldFocus,
+                        autofocus: false,
+                        isMandatory: true,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        capitalization: TextCapitalization.words,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 14.0),
+                      child: TextformWidget(
+                        initialValue: '', labelName: 'Retype Password',
+                        // saved: (val) => eventName = val,
+                        // focusNode: nameFieldFocus,
+                        autofocus: false,
+                        isMandatory: true,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        capitalization: TextCapitalization.words,
+                      ),
+                    ),
+
+                    // Save button
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 14.0),
+                              child: saveButton()),
+                        ),
+                      ],
+                    ),
+
+                    // Logout button
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 14.0),
+                              child: logoutButton()),
+                        ),
+                      ],
+                    ),
+
+                    /*
+                    OLD Logout button
+                    InkWell(
+                      onTap: () {
+                        onLogout();
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.only(right: 30.0, top: 30),
+                          child: CircleAvatar(
+                            radius: 28,
+                            backgroundColor: const Color.fromRGBO(243, 244, 248, 1),
+                            child: SvgPicture.asset(CustomIcons.logout),
+                          )),
+                    ),
+                    */
+
+                  ]),
+            )),
+          ),
         ),
       ),
     );
