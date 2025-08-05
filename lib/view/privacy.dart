@@ -13,6 +13,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../services/api_provider.dart';
 import '../utils/constants.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class Privacy extends StatefulWidget {
   final bool isLogin;
@@ -30,7 +32,7 @@ class _PrivacyState extends State<Privacy> with TickerProviderStateMixin {
   TabController? pageController;
   int? pages = 0;
   int? currentPage = 0;
-  String pdfFile = "Privacy Policy.pdf";
+  String pdfFile = "Privacy_Policy.pdf";
   UserDetails userDetails = UserDetails();
   Future<void> getContentList() async {
     setState(() {
@@ -150,35 +152,17 @@ class _PrivacyState extends State<Privacy> with TickerProviderStateMixin {
             : Column(
                 children: [
                   Expanded(
-                    child: PDFView(
-                      swipeHorizontal: true,
-                      fitPolicy: FitPolicy.BOTH,
-                      fitEachPage: true,
-                      filePath: pfile!.path,
-                      // defaultPage: currentPage!,
-                      onViewCreated: (PDFViewController pdfViewController) {
-                        _controller.complete(pdfViewController);
-                      },
-                      onRender: (pages) {
-                        pageController = TabController(
-                            length: pages!,
-                            vsync: this,
-                            animationDuration: const Duration(seconds: 1));
-                        setState(() {
-                          pages = pages;
-                        });
-                      },
-                      onPageChanged: (int? page, int? total) {
-                        pageController!.index = page!;
-
-                        // pageController.animateToPage(
-                        //   page!,
-                        //   duration: const Duration(milliseconds: 400),
-                        //   curve: Curves.easeInOut,
-                        // );
-                        currentPage = page;
-                        setState(() {});
-                      },
+                    child: SafeArea(
+                      child: SfPdfViewerTheme(
+                        data: SfPdfViewerThemeData(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: SfPdfViewer.asset(
+                          'assets/pdfs/Privacy_Policy.pdf',
+                          pageLayoutMode: PdfPageLayoutMode.continuous,
+                          canShowScrollHead: true,
+                        ),
+                      ),
                     ),
                   ),
                 ],

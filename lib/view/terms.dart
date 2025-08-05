@@ -10,6 +10,8 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../utils/constants.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class Terms extends StatefulWidget {
   final bool isLogin;
@@ -113,35 +115,17 @@ class _TermsState extends State<Terms> with TickerProviderStateMixin {
             : Column(
                 children: [
                   Expanded(
-                    child: PDFView(
-                      swipeHorizontal: true,
-                      fitPolicy: FitPolicy.BOTH,
-                      fitEachPage: true,
-                      filePath: pfile!.path,
-                      // defaultPage: currentPage!,
-                      onViewCreated: (PDFViewController pdfViewController) {
-                        _controller.complete(pdfViewController);
-                      },
-                      onRender: (pages) {
-                        pageController = TabController(
-                            length: pages!,
-                            vsync: this,
-                            animationDuration: Duration(seconds: 1));
-                        setState(() {
-                          pages = pages;
-                        });
-                      },
-                      onPageChanged: (int? page, int? total) {
-                        pageController!.index = page!;
-
-                        // pageController.animateToPage(
-                        //   page!,
-                        //   duration: const Duration(milliseconds: 400),
-                        //   curve: Curves.easeInOut,
-                        // );
-                        currentPage = page;
-                        setState(() {});
-                      },
+                    child: SafeArea(
+                      child: SfPdfViewerTheme(
+                        data: SfPdfViewerThemeData(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: SfPdfViewer.asset(
+                          'assets/pdfs/Terms_of_Use.pdf',
+                          pageLayoutMode: PdfPageLayoutMode.continuous,
+                          canShowScrollHead: true,
+                        ),
+                      ),
                     ),
                   ),
                   
