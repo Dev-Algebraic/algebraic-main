@@ -1,4 +1,5 @@
 import 'package:algebraic/services/api_provider.dart';
+import 'package:algebraic/utils/streakmanager.dart';
 import 'package:algebraic/view/score.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -272,6 +273,14 @@ class _QuizState extends State<Quiz> {
     }
 
     super.initState();
+
+    _updateStreak();
+  }
+
+  final streakManager = StreakManager();
+  
+  void _updateStreak() async {
+    await streakManager.updateStreak();
   }
 
   void nextQuestion() {
@@ -507,8 +516,14 @@ class _QuizState extends State<Quiz> {
                               : Padding(
                                   padding: const EdgeInsets.only(
                                       bottom: 59, left: 28.0, right: 21),
-                                  child: Image.network(URLIdentifier.BASE_URL +
-                                      quizList[currentQuestion].questionImg1!),
+                                  child: Image.network(
+                                    URLIdentifier.BASE_URL + quizList[currentQuestion].questionImg1!,
+                                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                      return const Text(
+                                        'Network Error: Image failed to load',
+                                      );
+                                    },
+                                  ),
                                 ),
                           quizList[currentQuestion].questionImg2 == null ||
                                   quizList[currentQuestion].questionImg2 == ""
@@ -516,8 +531,14 @@ class _QuizState extends State<Quiz> {
                               : Padding(
                                   padding: const EdgeInsets.only(
                                       bottom: 59, left: 28.0, right: 21),
-                                  child: Image.network(URLIdentifier.BASE_URL +
-                                      quizList[currentQuestion].questionImg2!),
+                                  child: Image.network(
+                                    URLIdentifier.BASE_URL + quizList[currentQuestion].questionImg2!,
+                                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                      return const Text(
+                                        'Network Error: Image failed to load',
+                                      );
+                                    },
+                                  ),
                                 ),
                           quizList[currentQuestion].questionImg3 == null ||
                                   quizList[currentQuestion].questionImg3 == ""
@@ -525,8 +546,14 @@ class _QuizState extends State<Quiz> {
                               : Padding(
                                   padding: const EdgeInsets.only(
                                       bottom: 59, left: 28.0, right: 21),
-                                  child: Image.network(URLIdentifier.BASE_URL +
-                                      quizList[currentQuestion].questionImg3!),
+                                  child: Image.network(
+                                    URLIdentifier.BASE_URL + quizList[currentQuestion].questionImg3!,
+                                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                      return const Text(
+                                        'Network Error: Image failed to load',
+                                      );
+                                    },
+                                  ),
                                 ),
                           // quizJsonModule["questions"][currentQuestion]["imageURL"] ==
                           //         null

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:algebraic/app_config.dart';
 import 'package:algebraic/routes/route_constants.dart';
+import 'package:algebraic/utils/streakmanager.dart';
 import 'package:algebraic/view/quiz.dart';
 import 'package:algebraic/utils/pdfassetmanager.dart';
 import 'package:flutter/material.dart';
@@ -119,6 +120,14 @@ class _AboutSubmodulePdfState extends State<AboutSubmodulePdf>
     }
 
     super.initState();
+
+    _updateStreak();
+  }
+
+  final streakManager = StreakManager();
+  
+  void _updateStreak() async {
+    await streakManager.updateStreak();
   }
 
   File? pfile;

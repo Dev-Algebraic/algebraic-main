@@ -822,7 +822,7 @@ class _AboutModuleState extends State<AboutModule> {
 
           // Past attempts header
           Padding(
-            padding: const EdgeInsets.only(left: 32, right: 32, top: 24),
+            padding: const EdgeInsets.only(left: 18, right: 18, top: 24),
 
             child: Align(
               alignment: Alignment.centerLeft,
@@ -847,7 +847,7 @@ class _AboutModuleState extends State<AboutModule> {
 
   Padding attemptsList(theme) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0, left: 32.0, right: 32.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 18.0, right: 18.0),
 
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
